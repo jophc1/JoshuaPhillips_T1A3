@@ -35,6 +35,13 @@ def assign_new_path_index(row_position: int, column_position: int, direction_lis
     maze_list[row_position][column_position] = current_index
     return row_position, column_position
 
+def maze_to_stringList(maze_ascii_format):
+    maze_string_list = []
+    maze_string_list.append("".join(["_" for _ in range(len(maze_ascii_format[0]) + 2)])) # top wall
+    for _,maze_column in enumerate(maze_ascii_format):
+        maze_string_list.append(chr(0x256c) + "".join(maze_column) + chr(0x256c))
+    maze_string_list.append("".join([chr(0x203e) for _ in range(len(maze_ascii_format[0]) + 2)])) # bottom wall
+    return maze_string_list
 
 # USER INPUTS - implement later on
 row_maze = 10
@@ -89,7 +96,7 @@ else:
 fake_path_quantity = random.randint(column_maze // fake_modifier, (column_maze // fake_modifier) + 2) # total number of fake paths minus the compulsory two fake paths at start and end
 
 fake_path_start = random.randint(1,3) # one fake path will be from 1-3 position of start point
-fake_path_end = random.randint(current_path_index - 2, current_path_index) # another fake path will be from 1-3 positions from end point
+fake_path_end = random.randint(current_path_index - 5, current_path_index - 3) # another fake path will be from 1-5 positions from end point
 fake_path_set = set([fake_path_start, fake_path_end]) # all other fake paths will be from positions between these two fake paths starting points
 
 # keep generating random indexes until there are unique amount of indexes equal to total amount of fake paths
@@ -127,31 +134,46 @@ print(correct_to_fake_connection) # DEBUGGING
 # When all paths are done, then we are ready to start saving walls for corridors into another list so we can print walls around corridors and maze 
 # in ASCII format, with (+) at the start position
 
-## need variables:
-# correct_to_fake_connection
-# end_point_index
-# maze_paths 
-
-## create a list that will store the ASCII representation of maze
 # will be (row size * 2) - 1 and (column size * 2) -1
 maze_ascii = [[" " for _ in range((column_maze * 2) - 1)] for _ in range((row_maze * 2) - 1)]
-test = 0
+
 # check right and down on each item in column maze_paths except for last position where we only evaluate down (as right will be a wall)
 # also last row will only check right as the bottom will be a wall
 
 def evaluate_direction(row_position, column_position, direction, maze_index):
+    maze_index_value = maze_index[row_position][column_position]
+    maze_character = " "
+
     if "right" in direction:
-        pass
-        if maze_index[row_position][column_position]: #there is a number here
-            pass
-        else: #there is no number here
-            pass
-        return chr(0x256c)
+        maze_next_value = maze_index[row_position][column_position + 1]
+        if maze_index_value: #there is a number here
+            if maze_index_value + 1 == maze_next_value or maze_index_value - 1 == maze_next_value: # is the number next to this one either one more or one less? than keep it clear between paths
+                maze_character = " "
+            elif (maze_index_value, maze_next_value) in correct_to_fake_connection or (maze_next_value, maze_index_value) in correct_to_fake_connection:
+                maze_character = " "
+            else:
+                maze_character = chr(0x256c)
+            # else is the number in current position higher than one in right position
+        else: #there is no number here ie a zero
+            maze_character = chr(0x256c)
+            
     elif "down" in direction:
-        pass
-        return chr(0x256c)
+        maze_next_value = maze_index[row_position + 1][column_position]
+        if maze_index_value: #there is a number here
+            if maze_index_value + 1 == maze_next_value or maze_index_value - 1 == maze_next_value: # is the number next to this one either one more or one less? than keep it clear between paths
+                maze_character = " "
+            elif (maze_index_value, maze_next_value) in correct_to_fake_connection or (maze_next_value, maze_index_value) in correct_to_fake_connection:
+                maze_character = " "
+            else:
+                maze_character = chr(0x2550)
+            # else is the number in current position higher than one in right position
+        else: #there is no number here ie a zero
+            maze_character = chr(0x2550)
+        
     else:
         raise Exception("Invalid direction string")
+    
+    return maze_character
 
 
 for row_index in range(row_maze):
@@ -172,17 +194,16 @@ for row_index in range(row_maze):
                 if column_index <= column_maze - 2: # all except for bottom right corner
                     maze_ascii[(row_index * 2) + 1][(column_index * 2) + 1] = chr(0x256C)
 
-    
-## next need to evaluate each line of maze_paths where it check for either 0, a wall or a number
-for _,col in enumerate(maze_ascii):
-    print(col)
+# input starting player position and end point (X)
+current_row = start_point * 2
+current_column = 0
+maze_ascii[current_row][current_column] = '@' ## DEBUGGING
+maze_ascii[end_point * 2][-1] = 'X'
 
+maze_ascii_list = maze_to_stringList(maze_ascii)
 
+for line in maze_ascii_list:
+    print(line)
 
-# if a zero, check right and down for either other zeroes or edge or a number. 
-# if a number we check if number is less than equal to end_point_index, is so put a wall between zero and number
-# if number is greater than end_point_index, 
-
-# insert walls at the end so we know how many we need to put in
 
 
