@@ -43,10 +43,51 @@ def maze_to_stringList(maze_ascii_format):
     maze_string_list.append("".join([chr(0x203e) for _ in range(len(maze_ascii_format[0]) + 2)])) # bottom wall
     return maze_string_list
 
+def build_wall_direction(direction):
+    if "right" in direction:
+        maze_character = chr(0x256c)
+    else: 
+        maze_character = chr(0x2550)
+    return maze_character
+
+def check_direction(maze_index_value, maze_next_value, direction, end_value):    
+    if maze_index_value: #there is a number here
+        if maze_index_value + 1 == maze_next_value or maze_index_value - 1 == maze_next_value: 
+            maze_character = " "
+        elif (maze_index_value, maze_next_value) in correct_to_fake_connection or (maze_next_value, maze_index_value) in correct_to_fake_connection:
+            maze_character = " "
+        else:
+            maze_character = build_wall_direction(direction)
+    else: #there is no number here ie a zero
+        if maze_next_value > end_value:
+            maze_character = " "
+        elif not maze_next_value: #chance to either build wall or keep open
+            wall = random.randint(0,1)
+            if not wall:
+                maze_character = " "
+            else:
+                maze_character = build_wall_direction(direction)
+        else:
+            maze_character = build_wall_direction(direction)
+    return maze_character
+
+def evaluate_directions_and_assign(row_position, column_position, maze_index, maze_final, end_value):
+    maze_value = maze_index[row_position][column_position]
+
+    if column_position <= len(maze_index[0]) - 2: # all columns except for last column
+        maze_next_value = maze_index[row_position][column_position + 1]
+        maze_ascii[row_position * 2][(column_index * 2) + 1] = check_direction(maze_value, maze_next_value, 'right', end_value)
+
+    if row_position <= len(maze_index) - 2: # all rows except for last row
+        maze_next_value = maze_index[row_position + 1][column_position]
+        maze_ascii[(row_position * 2) + 1][column_index * 2] = check_direction(maze_value, maze_next_value, 'down', end_value)
+        if column_position <= len(maze_index[0]) - 2: # all except for bottom right corner
+                maze_final[(row_position * 2) + 1][(column_position * 2) + 1] = chr(0x256C)
+
 # USER INPUTS - implement later on
 row_maze = 10
-column_maze = 10
-user_input_difficulty = 'medium' # this will be from terminal prompt, remember to lowercase actual input later
+column_maze = 20
+user_input_difficulty = 'hard' # this will be from terminal prompt, remember to lowercase actual input later
 
 # create a maze path indexes from user parameters (debugging - at the moment these are set values for row and column)
 maze_paths = [[0 for _ in range(column_maze)] for _ in range(row_maze)]
@@ -59,44 +100,34 @@ maze_paths[start_point][0] = 1
 current_row = start_point   # begin at start point coordinates
 current_column = 0          #
 current_path_index = 1 #index starts at 2 as start point is 1
-next_path_direction = ""
 
 # Correct path generation
 while True:
-    
-    #check if right edge
-    if current_column == (column_maze - 1):
-        #on end point, therefore break loop
-        if current_row == end_point:
+    if current_column == (column_maze - 1): #check if right edge
+        if current_row == end_point: #on end point, therefore break loop
             break
-        # current position above end point
-        elif current_row < end_point:
+        elif current_row < end_point:# current position above end point
             next_path_direction = 'down'
-        # current position below end point
-        else:
+        else: # current position below end point
             next_path_direction = 'up'
-    else:
+    else: #not right edge
         next_path_direction = current_moves(current_row, current_column, maze_paths)
     current_path_index += 1
     current_row, current_column = assign_new_path_index(current_row, current_column, next_path_direction, current_path_index, maze_paths)
     
-# debugging, remove later: print out new maze_paths
-pprint(maze_paths) # DEBUGGING
 end_point_index = current_path_index # this is used for evaluating the end point when creating ascii maze
-print(end_point_index) # DEBUGGING
 
-# generate fake paths around correct path
+# user inputted difficulty used to determine modifer used for fake path quantities
 if user_input_difficulty in 'easy':
     fake_modifier = 6
 elif user_input_difficulty in 'medium':
     fake_modifier = 5
-else:
+else: #hard
     fake_modifier = 4
 
 fake_path_quantity = random.randint(column_maze // fake_modifier, (column_maze // fake_modifier) + 2) # total number of fake paths minus the compulsory two fake paths at start and end
-
-fake_path_start = random.randint(1,3) # one fake path will be from 1-3 position of start point
-fake_path_end = random.randint(current_path_index - 5, current_path_index - 3) # another fake path will be from 1-5 positions from end point
+fake_path_start = random.randint(1,2) # one fake path will be from 1-3 position of start point
+fake_path_end = random.randint(current_path_index - 6, current_path_index - 4) # another fake path will be from 3-5 positions from end point
 fake_path_set = set([fake_path_start, fake_path_end]) # all other fake paths will be from positions between these two fake paths starting points
 
 # keep generating random indexes until there are unique amount of indexes equal to total amount of fake paths
@@ -105,9 +136,8 @@ while len(fake_path_set) < fake_path_quantity + 2:
 
 fake_path_starting_points = list(fake_path_set) #convert set to a list
 fake_path_starting_points.sort() # sort fake path starting points
-print(fake_path_starting_points) # DEBUGGING
+correct_to_fake_connection = [] # contain where correct path and fake path should connect
 
-correct_to_fake_connection = [] 
 for fake_starting_point in fake_path_starting_points:
     # find where fake starting point is on the maze path index list
     for row_index in range(len(maze_paths)):
@@ -115,7 +145,7 @@ for fake_starting_point in fake_path_starting_points:
             current_row = row_index
             current_column = maze_paths[row_index].index(fake_starting_point)
             break
-    print(current_row, current_column) # DEBUGGING
+
     # Fake path generation
     first_fake_step = 1
     while True:
@@ -129,78 +159,21 @@ for fake_starting_point in fake_path_starting_points:
             correct_to_fake_connection.append((fake_starting_point, current_path_index))
             first_fake_step = 0
 
-pprint(maze_paths) # DEBUGGING
-print(correct_to_fake_connection) # DEBUGGING
-# When all paths are done, then we are ready to start saving walls for corridors into another list so we can print walls around corridors and maze 
-# in ASCII format, with (+) at the start position
-
-# will be (row size * 2) - 1 and (column size * 2) -1
+# create list to hold ascii maze
 maze_ascii = [[" " for _ in range((column_maze * 2) - 1)] for _ in range((row_maze * 2) - 1)]
-
-# check right and down on each item in column maze_paths except for last position where we only evaluate down (as right will be a wall)
-# also last row will only check right as the bottom will be a wall
-
-def evaluate_direction(row_position, column_position, direction, maze_index):
-    maze_index_value = maze_index[row_position][column_position]
-    maze_character = " "
-
-    if "right" in direction:
-        maze_next_value = maze_index[row_position][column_position + 1]
-        if maze_index_value: #there is a number here
-            if maze_index_value + 1 == maze_next_value or maze_index_value - 1 == maze_next_value: # is the number next to this one either one more or one less? than keep it clear between paths
-                maze_character = " "
-            elif (maze_index_value, maze_next_value) in correct_to_fake_connection or (maze_next_value, maze_index_value) in correct_to_fake_connection:
-                maze_character = " "
-            else:
-                maze_character = chr(0x256c)
-            # else is the number in current position higher than one in right position
-        else: #there is no number here ie a zero
-            maze_character = chr(0x256c)
-            
-    elif "down" in direction:
-        maze_next_value = maze_index[row_position + 1][column_position]
-        if maze_index_value: #there is a number here
-            if maze_index_value + 1 == maze_next_value or maze_index_value - 1 == maze_next_value: # is the number next to this one either one more or one less? than keep it clear between paths
-                maze_character = " "
-            elif (maze_index_value, maze_next_value) in correct_to_fake_connection or (maze_next_value, maze_index_value) in correct_to_fake_connection:
-                maze_character = " "
-            else:
-                maze_character = chr(0x2550)
-            # else is the number in current position higher than one in right position
-        else: #there is no number here ie a zero
-            maze_character = chr(0x2550)
-        
-    else:
-        raise Exception("Invalid direction string")
-    
-    return maze_character
-
-
+# evaluate and assigned ascii values to maze
+end_point_value = maze_paths[end_point][-1]
 for row_index in range(row_maze):
-        # test += 1
         for column_index in range(column_maze):
-            if column_index <= column_maze - 2: # all columns except for last column
-                # check right
-                test = evaluate_direction(row_index, column_index, 'right', maze_paths)
-                # save result into maze_ascii
-                maze_ascii[(row_index * 2)][((column_index * 2) + 1)] = test
-
-            if row_index <= row_maze - 2: # all rows except for last row 
-                # check down
-                test = evaluate_direction(row_index, column_index, 'down', maze_paths)
-
-                maze_ascii[(row_index * 2) + 1][(column_index * 2)] = test
-
-                if column_index <= column_maze - 2: # all except for bottom right corner
-                    maze_ascii[(row_index * 2) + 1][(column_index * 2) + 1] = chr(0x256C)
+            evaluate_directions_and_assign(row_index, column_index, maze_paths, maze_ascii, end_point_value)
 
 # input starting player position and end point (X)
 current_row = start_point * 2
 current_column = 0
-maze_ascii[current_row][current_column] = '@' ## DEBUGGING
+maze_ascii[current_row][current_column] = '@' 
 maze_ascii[end_point * 2][-1] = 'X'
 
-maze_ascii_list = maze_to_stringList(maze_ascii)
+maze_ascii_list = maze_to_stringList(maze_ascii) #this will be required for feature 4 .txt output
 
 for line in maze_ascii_list:
     print(line)
