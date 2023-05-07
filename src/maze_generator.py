@@ -133,8 +133,51 @@ print(correct_to_fake_connection) # DEBUGGING
 # maze_paths 
 
 ## create a list that will store the ASCII representation of maze
-## need to save a top wall for top of maze in first row of maze ascii list - maybe do this at end of ascii generation
+# will be (row size * 2) - 1 and (column size * 2) -1
+maze_ascii = [[" " for _ in range((column_maze * 2) - 1)] for _ in range((row_maze * 2) - 1)]
+test = 0
+# check right and down on each item in column maze_paths except for last position where we only evaluate down (as right will be a wall)
+# also last row will only check right as the bottom will be a wall
+
+def evaluate_direction(row_position, column_position, direction, maze_index):
+    if "right" in direction:
+        pass
+        if maze_index[row_position][column_position]: #there is a number here
+            pass
+        else: #there is no number here
+            pass
+        return chr(0x256c)
+    elif "down" in direction:
+        pass
+        return chr(0x256c)
+    else:
+        raise Exception("Invalid direction string")
+
+
+for row_index in range(row_maze):
+        # test += 1
+        for column_index in range(column_maze):
+            if column_index <= column_maze - 2: # all columns except for last column
+                # check right
+                test = evaluate_direction(row_index, column_index, 'right', maze_paths)
+                # save result into maze_ascii
+                maze_ascii[(row_index * 2)][((column_index * 2) + 1)] = test
+
+            if row_index <= row_maze - 2: # all rows except for last row 
+                # check down
+                test = evaluate_direction(row_index, column_index, 'down', maze_paths)
+
+                maze_ascii[(row_index * 2) + 1][(column_index * 2)] = test
+
+                if column_index <= column_maze - 2: # all except for bottom right corner
+                    maze_ascii[(row_index * 2) + 1][(column_index * 2) + 1] = chr(0x256C)
+
+    
 ## next need to evaluate each line of maze_paths where it check for either 0, a wall or a number
+for _,col in enumerate(maze_ascii):
+    print(col)
+
+
 
 # if a zero, check right and down for either other zeroes or edge or a number. 
 # if a number we check if number is less than equal to end_point_index, is so put a wall between zero and number
