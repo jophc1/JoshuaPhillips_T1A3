@@ -1,6 +1,6 @@
 from maze_generator import generate_maze_ascii, maze_to_stringList, MazeDifficultyInputError, MazeIntRangeError
 import os
-from colored import fg, bg, attr
+from colored import fg, attr
 
 def user_input_maze_output():
     while True:
@@ -20,10 +20,10 @@ def print_maze_and_move(maze, player_row, player_column):
         
     os.system('cls' if os.name == 'nt' else 'clear') # use command "cls" if windoms os otherwuse use "clear" for unix os
     maze_string_list = maze_to_stringList(maze) #this will be required for feature 4 .txt output
-    print(f'{fg(1)}')
+    print(f'{fg(13)}') # fg 1 is red, 2 is green, 13 is pink, 15 is white
     for line in maze_string_list:
         # print(line, end="")
-        print(f'{line}', end="") 
+        print(line, end="") 
     print(f'{attr(0)}') 
         # bg 20 blue 22 green 91 purple
     while True:
@@ -73,6 +73,7 @@ except KeyboardInterrupt:
     print("Thanks for playing")
 
     
-
+# added user input for wall color (fg()). Have them input a color and print out a small test display maze to see if they like color. If they do keep color
+# otherwise prompt them again for another color.
 
    
