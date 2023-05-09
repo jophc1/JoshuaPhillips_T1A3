@@ -1,5 +1,6 @@
 from maze_generator import generate_maze_ascii, maze_to_stringList, MazeDifficultyInputError, MazeIntRangeError
 import os
+from colored import fg, bg, attr
 
 def user_input_maze_output():
     while True:
@@ -19,9 +20,12 @@ def print_maze_and_move(maze, player_row, player_column):
         
     os.system('cls' if os.name == 'nt' else 'clear') # use command "cls" if windoms os otherwuse use "clear" for unix os
     maze_string_list = maze_to_stringList(maze) #this will be required for feature 4 .txt output
+    print(f'{fg(1)}')
     for line in maze_string_list:
-        print(line, end="")  
-
+        # print(line, end="")
+        print(f'{line}', end="") 
+    print(f'{attr(0)}') 
+        # bg 20 blue 22 green 91 purple
     while True:
         user_direction = input("Input direction(Left = a, Up = w, Right = d, Down = s) else type \"quit\" to exit: ")
         if user_direction in ['a', 'w', 'd', 's']:
@@ -55,11 +59,11 @@ try:
         #check if won
         if player_column == len(maze[0]) - 1 and player_row == finish_row: #reached end
             repeat_game = input("You have won, play again? (yes/no): ")
-            if repeat_game in 'yes':
+            if 'yes' in repeat_game:
                 maze, start_row, finish_row = user_input_maze_output()
                 player_row = start_row
                 player_column = 0
-            elif repeat_game in 'no':
+            elif 'no' in repeat_game:
                 raise KeyboardInterrupt
             else:
                 print("Invalid input (input: 'yes' or 'no')")
