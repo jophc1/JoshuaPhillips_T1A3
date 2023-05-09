@@ -1,5 +1,5 @@
 import random
-from pprint import pprint
+
 
 class MazeDifficultyInputError(Exception):
     pass
