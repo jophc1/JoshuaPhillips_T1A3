@@ -26,7 +26,7 @@ def current_moves(row_position: int, column_position: int, maze_paths_indexes: l
     #return list of directions in could go in as a string list e.g ['left', 'up', 'down']
     return valid_directions
 
-def assign_new_path_index(row_position: int, column_position: int, direction_list: list, current_index: int, maze_list: list):
+def assign_new_path_index(row_position, column_position, direction_list, current_index, maze_list):
     move_direction = direction_list[random.randint(0, len(direction_list) - 1)]
 
     if move_direction in 'left':
@@ -178,9 +178,7 @@ def generate_maze_ascii(row_maze, column_maze, user_input_difficulty):
                 evaluate_directions_and_assign(row_index, column_index, maze_paths, maze_ascii, end_point_value, correct_to_fake_connection)
 
     # input starting player position and end point (X)
-    current_row = start_point * 2
-    current_column = 0
-    maze_ascii[current_row][current_column] = '@' 
+    maze_ascii[start_point * 2][0] = '@' 
     maze_ascii[end_point * 2][-1] = 'X'
     return maze_ascii, start_point * 2, end_point * 2   #return maze ascii and row position of start and end point
     

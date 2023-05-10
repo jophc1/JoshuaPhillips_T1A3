@@ -2,6 +2,9 @@ from maze_generator import generate_maze_ascii, maze_to_stringList, MazeDifficul
 from os import system, name, path
 from colored import fg, attr
 
+class MazeFileOverwrite(Exception):
+    pass
+
 def user_input_maze_output():
     while True:
         try:
@@ -45,7 +48,7 @@ def print_maze_and_move(maze, player_row, player_column, wall_colour = 1):
             maze[previous_row][previous_column] = " "
             maze[player_row][player_column] = "@"
             return player_row, player_column
-        elif 'quit' in user_direction:
+        elif 'quit' == user_direction:
             raise KeyboardInterrupt
         else:
             print("Incorrect input")
@@ -77,9 +80,9 @@ def wall_colour_selection():
         print(f'{attr(0)}')
         while True:
             confirm_colour = input("Is this colour satisfactory? (yes/no): ")
-            if "yes" in confirm_colour:
+            if "yes" == confirm_colour:
                 return colour_int
-            elif "no" in confirm_colour:
+            elif "no" == confirm_colour:
                 break
             else:
                 print("Invalid input ('yes' or 'no')")
@@ -96,9 +99,9 @@ def single_play_mode():
     while True: #keep goin until player wins game or quits
         if player_column == len(maze[0]) - 1 and player_row == finish_row: #reached end
             repeat_game = input("You have won, play again? (yes/no): ")
-            if 'yes' in repeat_game:
+            if 'yes' == repeat_game:
                 maze, player_row, player_column, finish_row, fg_colour_int = new_game()
-            elif 'no' in repeat_game:
+            elif 'no' == repeat_game:
                 raise KeyboardInterrupt
             else:
                 print("Invalid input (input: 'yes' or 'no')")
@@ -106,18 +109,30 @@ def single_play_mode():
         player_row, player_column = print_maze_and_move(maze, player_row, player_column, fg_colour_int)
 
 def text_file_mode():
+    # Prompt user for file name and check if valid
+    try:
+        while True:
+            maze_name = input("Enter in name for maze file. No spaces and only alphabetic and numbers (e.g. 'maze1): ")
+            if maze_name.isalnum():
+                user_text_file = maze_name + '.txt'
+                if path.exists(user_text_file): #file exists
+                    while True:
+                        confirm_maze_overwrite = input(f'{user_text_file} already exists, do you want to overwrite? (y/n): ')
+                        if confirm_maze_overwrite == 'y':
+                            raise MazeFileOverwrite
+                        elif confirm_maze_overwrite == 'n':
+                            break
+                        else:
+                            print("Invalid input 'y' or 'n' only")
+                else:
+                    break
+            else:
+                print("Name can only be alphabetic and numbers, no spaces")
+    except MazeFileOverwrite:
+        print(f'{user_text_file} will be overwritten with new maze')
+    else:
+        print(f'New file {user_text_file} will be created')
     
-    ## prompt user for a file name
-
-    ##check name is one word (i.e no spaces) and no special characters (!,@,# etc)
-    # isalnum()
-    ## check if file name can be used
-    user_text_file = 'test' + '.txt'
-    if path.exists(user_text_file): #file exists
-        pass
-        # do you want to overwrite this file?
-        # if so continue
-        # otherwise go back to prompt for another file name
     # generate maze
     maze, _, _ = user_input_maze_output()
     #convert maze to string list
@@ -127,6 +142,6 @@ def text_file_mode():
         for line in mazeString_list:
             maze_file.writelines(line)
     
-    # when finished, close file (will be done by using with open() as ...:) and raise KeyBoardException to exit program
+    # when finished, raise KeyBoardException to exit program
     print(f'maze saved in {user_text_file}')
     raise KeyboardInterrupt
