@@ -1,5 +1,5 @@
 from maze_generator import generate_maze_ascii, maze_to_stringList, MazeDifficultyInputError, MazeIntRangeError
-import os
+from os import system, name
 from colored import fg, attr
 
 def user_input_maze_output():
@@ -18,7 +18,7 @@ def user_input_maze_output():
             
 def print_maze_and_move(maze, player_row, player_column, wall_colour = 1):
         
-    os.system('cls' if os.name == 'nt' else 'clear') # use command "cls" if windoms os otherwuse use "clear" for unix os
+    system('cls' if name == 'nt' else 'clear') # use command "cls" if windoms os otherwise use "clear" for unix os
     maze_string_list = maze_to_stringList(maze) #this will be required for feature 4 .txt output
     print(f'{fg(wall_colour)}') # fg 1 is red, 2 is green, 13 is pink, 15 is white
     for line in maze_string_list:
@@ -45,7 +45,7 @@ def print_maze_and_move(maze, player_row, player_column, wall_colour = 1):
             maze[previous_row][previous_column] = " "
             maze[player_row][player_column] = "@"
             return player_row, player_column
-        elif user_direction in 'quit':
+        elif 'quit' in user_direction:
             raise KeyboardInterrupt
         else:
             print("Incorrect input")
@@ -70,7 +70,7 @@ def wall_colour_selection():
             case _:
                 print("Invalid colour")
                 continue
-        os.system('cls' if os.name == 'nt' else 'clear') # use command "cls" if windoms os otherwuse use "clear" for unix os
+        system('cls' if name == 'nt' else 'clear') # use command "cls" if windoms os otherwise use "clear" for unix os
         print(f'{fg(colour_int)}') # fg 1 is red, 2 is green, 13 is pink, 15 is white
         for line in colour_test_maze:
             print(line) 
@@ -84,33 +84,32 @@ def wall_colour_selection():
             else:
                 print("Invalid input ('yes' or 'no')")
        
+def new_game():
+    maze, start_row, end_row = user_input_maze_output()
+    start_column = 0
+    fg_int = wall_colour_selection()
+    return maze, start_row, start_column, end_row, fg_int
 
-# single play mode
-maze, start_row, finish_row = user_input_maze_output()
-player_row = start_row
-player_column = 0
-fg_colour_int = wall_colour_selection()
+def single_play_mode():
+    maze, player_row, player_column, finish_row, fg_colour_int = new_game()
+    try:
+        while True: #keep goin until player wins game or quits
+            if player_column == len(maze[0]) - 1 and player_row == finish_row: #reached end
+                repeat_game = input("You have won, play again? (yes/no): ")
+                if 'yes' in repeat_game:
+                    maze, player_row, player_column, finish_row, fg_colour_int = new_game()
+                elif 'no' in repeat_game:
+                    raise KeyboardInterrupt
+                else:
+                    print("Invalid input (input: 'yes' or 'no')")
+                    continue
+            player_row, player_column = print_maze_and_move(maze, player_row, player_column, fg_colour_int)
+    except KeyboardInterrupt:
+        print("Thanks for playing")
 
-try:
-    while True: #keep goin until player wins game or quits
-        #check if won
-        if player_column == len(maze[0]) - 1 and player_row == finish_row: #reached end
-            repeat_game = input("You have won, play again? (yes/no): ")
-            if 'yes' in repeat_game:
-                maze, start_row, finish_row = user_input_maze_output()
-                player_row = start_row
-                player_column = 0
-            elif 'no' in repeat_game:
-                raise KeyboardInterrupt
-            else:
-                print("Invalid input (input: 'yes' or 'no')")
-                continue
-        player_row, player_column = print_maze_and_move(maze, player_row, player_column, fg_colour_int)
-except KeyboardInterrupt:
-    print("Thanks for playing")
 
-    
-# added user input for wall color (fg()). Have them input a color and print out a small test display maze to see if they like color. If they do keep color
-# otherwise prompt them again for another color.
 
+
+mode_selection = input("Which mode to you want to use? ('single' = Single maze mode, 'text maze' = maze saved as .txt file)")
+single_play_mode()
    
