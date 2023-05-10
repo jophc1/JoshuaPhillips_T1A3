@@ -1,5 +1,5 @@
 from maze_generator import generate_maze_ascii, maze_to_stringList, MazeDifficultyInputError, MazeIntRangeError
-from os import system, name
+from os import system, name, path
 from colored import fg, attr
 
 def user_input_maze_output():
@@ -106,4 +106,27 @@ def single_play_mode():
         player_row, player_column = print_maze_and_move(maze, player_row, player_column, fg_colour_int)
 
 def text_file_mode():
-    pass
+    
+    ## prompt user for a file name
+
+    ##check name is one word (i.e no spaces) and no special characters (!,@,# etc)
+    # isalnum()
+    ## check if file name can be used
+    user_text_file = 'test' + '.txt'
+    if path.exists(user_text_file): #file exists
+        pass
+        # do you want to overwrite this file?
+        # if so continue
+        # otherwise go back to prompt for another file name
+    # generate maze
+    maze, _, _ = user_input_maze_output()
+    #convert maze to string list
+    mazeString_list = maze_to_stringList(maze)
+    # put in file name from user into with open(userfile.txt, 'w')
+    with open(user_text_file, 'w') as maze_file:
+        for line in mazeString_list:
+            maze_file.writelines(line)
+    
+    # when finished, close file (will be done by using with open() as ...:) and raise KeyBoardException to exit program
+    print(f'maze saved in {user_text_file}')
+    raise KeyboardInterrupt
