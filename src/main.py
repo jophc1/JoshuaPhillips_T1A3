@@ -16,11 +16,11 @@ def user_input_maze_output():
         except MazeDifficultyInputError:
             print("Difficulty can only be 'easy','medium','hard'")
             
-def print_maze_and_move(maze, player_row, player_column):
+def print_maze_and_move(maze, player_row, player_column, wall_colour = 1):
         
     os.system('cls' if os.name == 'nt' else 'clear') # use command "cls" if windoms os otherwuse use "clear" for unix os
     maze_string_list = maze_to_stringList(maze) #this will be required for feature 4 .txt output
-    print(f'{fg(13)}') # fg 1 is red, 2 is green, 13 is pink, 15 is white
+    print(f'{fg(wall_colour)}') # fg 1 is red, 2 is green, 13 is pink, 15 is white
     for line in maze_string_list:
         # print(line, end="")
         print(line, end="") 
@@ -50,10 +50,47 @@ def print_maze_and_move(maze, player_row, player_column):
         else:
             print("Incorrect input")
 
+def wall_colour_selection():
+    colour_test_maze = ["_____", 
+                        chr(0x256c) + " " + chr(0x256c) + " " + chr(0x256c), 
+                        chr(0x256c) + " " + chr(0x256c) + " " + chr(0x256c), 
+                        chr(0x256c) + " " + chr(0x256c) + " " + chr(0x256c), 
+                        chr(0x203e) + chr(0x203e) + chr(0x203e) + chr(0x203e) + chr(0x203e)]
+    while True:
+        foreground_colour = input("What colour for maze walls? ('red','green','pink','white'): ")
+        match foreground_colour:
+            case 'red':
+                colour_int = 1
+            case 'green':
+                colour_int = 2
+            case 'pink':
+                colour_int = 13
+            case 'white':
+                colour_int = 15
+            case _:
+                print("Invalid colour")
+                continue
+        os.system('cls' if os.name == 'nt' else 'clear') # use command "cls" if windoms os otherwuse use "clear" for unix os
+        print(f'{fg(colour_int)}') # fg 1 is red, 2 is green, 13 is pink, 15 is white
+        for line in colour_test_maze:
+            print(line) 
+        print(f'{attr(0)}')
+        while True:
+            confirm_colour = input("Is this colour satisfactory? (yes/no): ")
+            if "yes" in confirm_colour:
+                return colour_int
+            elif "no" in confirm_colour:
+                break
+            else:
+                print("Invalid input ('yes' or 'no')")
+       
+
 # single play mode
 maze, start_row, finish_row = user_input_maze_output()
 player_row = start_row
 player_column = 0
+fg_colour_int = wall_colour_selection()
+
 try:
     while True: #keep goin until player wins game or quits
         #check if won
@@ -68,7 +105,7 @@ try:
             else:
                 print("Invalid input (input: 'yes' or 'no')")
                 continue
-        player_row, player_column = print_maze_and_move(maze, player_row, player_column)
+        player_row, player_column = print_maze_and_move(maze, player_row, player_column, fg_colour_int)
 except KeyboardInterrupt:
     print("Thanks for playing")
 
