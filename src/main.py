@@ -1,5 +1,5 @@
 from maze_modes import single_play_mode, text_file_mode
-
+# main code loop
 while True:
     try:
         mode_selection = input("Which mode to you want to use? ('single', 'text', 'help', 'exit'): ")

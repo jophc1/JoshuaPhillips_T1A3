@@ -1,4 +1,4 @@
-import random
+from random import randint
 
 class MazeDifficultyInputError(Exception):
     pass
@@ -27,7 +27,7 @@ def current_moves(row_position, column_position, maze_paths_indexes, restrict_le
     return valid_directions
 
 def assign_new_path_index(row_position, column_position, direction_list, current_index, maze_list):
-    move_direction = direction_list[random.randint(0, len(direction_list) - 1)]
+    move_direction = direction_list[randint(0, len(direction_list) - 1)]
 
     if move_direction in 'left':
         column_position -= 1
@@ -67,7 +67,7 @@ def check_direction(maze_index_value, maze_next_value, direction, end_value, cor
         if maze_next_value > end_value:
             maze_character = " "
         elif not maze_next_value: #chance to either build wall or keep open
-            wall = random.randint(0,1)
+            wall = randint(0,1)
             if not wall:
                 maze_character = " "
             else:
@@ -103,8 +103,8 @@ def generate_maze_ascii(row_maze, column_maze, user_input_difficulty):
     maze_paths = [[0 for _ in range(column_maze)] for _ in range(row_maze)]
 
     # Determine a random starting and end point on the left and right side of the maze
-    start_point = random.randint(0, row_maze - 1)
-    end_point = random.randint(0, row_maze - 1)
+    start_point = randint(0, row_maze - 1)
+    end_point = randint(0, row_maze - 1)
 
     maze_paths[start_point][0] = 1
     current_row = start_point   # begin at start point coordinates
@@ -135,14 +135,14 @@ def generate_maze_ascii(row_maze, column_maze, user_input_difficulty):
     else: #hard
         fake_modifier = 4
 
-    fake_path_quantity = random.randint(column_maze // fake_modifier, (column_maze // fake_modifier) + 2) # total number of fake paths minus the compulsory two fake paths at start and end
-    fake_path_start = random.randint(1,2) # one fake path will be from 1-3 position of start point
-    fake_path_end = random.randint(current_path_index - 6, current_path_index - 4) # another fake path will be from 3-5 positions from end point
+    fake_path_quantity = randint(column_maze // fake_modifier, (column_maze // fake_modifier) + 2) # total number of fake paths minus the compulsory two fake paths at start and end
+    fake_path_start = randint(1,2) # one fake path will be from 1-3 position of start point
+    fake_path_end = randint(current_path_index - 6, current_path_index - 4) # another fake path will be from 3-5 positions from end point
     fake_path_set = set([fake_path_start, fake_path_end]) # all other fake paths will be from positions between these two fake paths starting points
 
     # keep generating random indexes until there are unique amount of indexes equal to total amount of fake paths
     while len(fake_path_set) < fake_path_quantity + 2:
-        fake_path_set.add(random.randint(fake_path_start + 1, fake_path_end - 1))
+        fake_path_set.add(randint(fake_path_start + 1, fake_path_end - 1))
 
     fake_path_starting_points = list(fake_path_set) #convert set to a list
     fake_path_starting_points.sort() # sort fake path starting points
