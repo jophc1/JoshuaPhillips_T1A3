@@ -9,8 +9,8 @@ while True:
             case 'text':
                 text_file_mode()
             case 'help':
-                print("""           'single' = Single maze mode. This mode is where a procedural maze is generated and is played on the terminal
-            'text' = Text file mode. This mode is to generate a maze and save it into a .txt file for offline play or printing""")
+                print("'single' = Single maze mode. This mode is where a procedural maze is generated and is played on the terminal")
+                print("'text' = Text file mode. This mode is to generate a maze and save it into a .txt file for offline play or printing")
             case 'exit':
                 raise KeyboardInterrupt
             case _:

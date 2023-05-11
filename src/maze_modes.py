@@ -1,4 +1,5 @@
-from maze_generator import generate_maze_ascii, maze_to_stringList, MazeDifficultyInputError, MazeIntRangeError
+from maze_generator import generate_maze_ascii, maze_to_stringList, \
+                           MazeDifficultyInputError, MazeIntRangeError
 from os import system, name, path
 from colored import fg, attr
 
@@ -11,7 +12,8 @@ def user_input_maze_output():
             row_maze = int(input("Enter in integer number for row size of maze (min 10, max 30): "))
             column_maze = int(input("Enter in integer number for column size of maze (min 10, max 30): "))
             user_input_difficulty = input("Difficulty of maze? (easy, medium or hard): ")
-            return generate_maze_ascii(row_maze, column_maze, user_input_difficulty)
+            return generate_maze_ascii(row_maze, column_maze, 
+                                       user_input_difficulty)
         except ValueError:
             print("Row and column must be a integer input")
         except MazeIntRangeError:
@@ -32,13 +34,17 @@ def print_maze_and_move(maze, player_row, player_column, wall_colour = 1):
         if user_direction in ['a', 'w', 'd', 's']:
             previous_row = player_row
             previous_column = player_column
-            if user_direction in 'a' and player_column and maze[player_row][player_column - 1] == " ":
+            if user_direction in 'a' and player_column \
+                and maze[player_row][player_column - 1] == " ":
                     player_column -= 2
-            elif user_direction in 'w' and player_row and maze[player_row - 1][player_column] == " ":
+            elif user_direction in 'w' and player_row \
+                and maze[player_row - 1][player_column] == " ":
                     player_row -= 2
-            elif user_direction in 'd' and player_column < len(maze[0]) - 1 and maze[player_row][player_column + 1] == " ":
+            elif user_direction in 'd' and player_column < len(maze[0]) - 1 \
+                and maze[player_row][player_column + 1] == " ":
                     player_column += 2
-            elif user_direction in 's' and player_row < len(maze) - 1 and maze[player_row + 1][player_column] == " ":
+            elif user_direction in 's' and player_row < len(maze) - 1 \
+                and maze[player_row + 1][player_column] == " ":
                     player_row += 2
             else:
                 print("blocked")
@@ -71,8 +77,8 @@ def wall_colour_selection():
             case _:
                 print("Invalid colour")
                 continue
-        system('cls' if name == 'nt' else 'clear') # use command "cls" if windoms os otherwise use "clear" for unix os
-        print(f'{fg(colour_int)}') # fg 1 is red, 2 is green, 13 is pink, 15 is white
+        system('cls' if name == 'nt' else 'clear') 
+        print(f'{fg(colour_int)}') 
         for line in colour_test_maze:
             print(line) 
         print(f'{attr(0)}')
@@ -95,7 +101,7 @@ def single_play_mode():
     maze, player_row, player_column, finish_row, fg_colour_int = new_game()
 
     while True: #keep goin until player wins game or quits
-        if player_column == len(maze[0]) - 1 and player_row == finish_row: #reached end
+        if player_column == len(maze[0]) - 1 and player_row == finish_row:
             repeat_game = input("You have won, play again? (yes/no): ")
             if 'yes' == repeat_game:
                 maze, player_row, player_column, finish_row, fg_colour_int = new_game()
@@ -104,7 +110,8 @@ def single_play_mode():
             else:
                 print("Invalid input (input: 'yes' or 'no')")
                 continue
-        player_row, player_column = print_maze_and_move(maze, player_row, player_column, fg_colour_int)
+        player_row, player_column = print_maze_and_move(maze, player_row, 
+                                                        player_column, fg_colour_int)
 
 def text_file_mode():
     # Prompt user for file name and check if valid
