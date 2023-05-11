@@ -6,7 +6,7 @@ class MazeDifficultyInputError(Exception):
 class MazeIntRangeError(Exception):
     pass
 
-def current_moves(row_position: int, column_position: int, maze_paths_indexes: list, restrict_left: int = 1) -> list:
+def current_moves(row_position, column_position, maze_paths_indexes, restrict_left = 1):
     valid_directions = []
     #Check left - left not evaluated when correct path is being generated
     if column_position -1 >= 0 and not maze_paths_indexes[row_position][column_position - 1] and not restrict_left:
