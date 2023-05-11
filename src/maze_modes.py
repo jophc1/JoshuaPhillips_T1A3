@@ -21,14 +21,12 @@ def user_input_maze_output():
             
 def print_maze_and_move(maze, player_row, player_column, wall_colour = 1):
         
-    system('cls' if name == 'nt' else 'clear') # use command "cls" if windoms os otherwise use "clear" for unix os
-    maze_string_list = maze_to_stringList(maze) #this will be required for feature 4 .txt output
-    print(f'{fg(wall_colour)}') # fg 1 is red, 2 is green, 13 is pink, 15 is white
+    system('cls' if name == 'nt' else 'clear') 
+    maze_string_list = maze_to_stringList(maze) 
+    print(f'{fg(wall_colour)}') 
     for line in maze_string_list:
-        # print(line, end="")
         print(line, end="") 
     print(f'{attr(0)}') 
-        # bg 20 blue 22 green 91 purple
     while True:
         user_direction = input("Input direction(Left = a, Up = w, Right = d, Down = s) else type \"quit\" to exit: ")
         if user_direction in ['a', 'w', 'd', 's']:

@@ -28,7 +28,6 @@ def current_moves(row_position, column_position, maze_paths_indexes, restrict_le
 
 def assign_new_path_index(row_position, column_position, direction_list, current_index, maze_list):
     move_direction = direction_list[randint(0, len(direction_list) - 1)]
-
     if move_direction in 'left':
         column_position -= 1
     elif move_direction in 'up':
@@ -86,30 +85,28 @@ def evaluate_directions_and_assign(row_position, column_position, maze_index, ma
     if row_position <= len(maze_index) - 2: # all rows except for last row
         maze_next_value = maze_index[row_position + 1][column_position]
         maze_final[(row_position * 2) + 1][column_position * 2] = check_direction(maze_value, maze_next_value, 'down', end_value, correct_fake_connection)
-        if column_position <= len(maze_index[0]) - 2: # all except for bottom right corner
+        if column_position <= len(maze_index[0]) - 2: # all bottom right corners of current position except for bottom right corner of maze
                 maze_final[(row_position * 2) + 1][(column_position * 2) + 1] = chr(0x256C)
 
 def generate_maze_ascii(row_maze, column_maze, user_input_difficulty):
 
     available_difficulties = ["easy", "medium", "hard"]
-    #check user inputs
+    
     if row_maze < 10 or row_maze > 30 or column_maze < 10 or column_maze > 30:
         raise MazeIntRangeError
 
     if user_input_difficulty.lower() not in available_difficulties:
         raise MazeDifficultyInputError
 
-    # create a maze path indexes from user parameters (debugging - at the moment these are set values for row and column)
     maze_paths = [[0 for _ in range(column_maze)] for _ in range(row_maze)]
 
-    # Determine a random starting and end point on the left and right side of the maze
     start_point = randint(0, row_maze - 1)
     end_point = randint(0, row_maze - 1)
 
     maze_paths[start_point][0] = 1
-    current_row = start_point   # begin at start point coordinates
-    current_column = 0          #
-    current_path_index = 1 #index starts at 2 as start point is 1
+    current_row = start_point   
+    current_column = 0          
+    current_path_index = 1 
 
     # Correct path generation
     while True:
@@ -125,8 +122,6 @@ def generate_maze_ascii(row_maze, column_maze, user_input_difficulty):
         current_path_index += 1
         current_row, current_column = assign_new_path_index(current_row, current_column, next_path_direction, current_path_index, maze_paths)
         
-    end_point_index = current_path_index # this is used for evaluating the end point when creating ascii maze
-
     # user inputted difficulty used to determine modifer used for fake path quantities
     if user_input_difficulty in 'easy':
         fake_modifier = 6
