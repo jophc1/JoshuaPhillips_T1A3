@@ -112,7 +112,7 @@ def text_file_mode():
     # Prompt user for file name and check if valid
     try:
         while True:
-            maze_name = input("Enter in name for maze file. No spaces and only alphabetic and numbers (e.g. 'maze1): ")
+            maze_name = input("Enter in name for maze file. No spaces and only alphabetic and numbers (e.g. 'maze1'): ")
             if maze_name.isalnum():
                 user_text_file = maze_name + '.txt'
                 if path.exists(user_text_file): #file exists
