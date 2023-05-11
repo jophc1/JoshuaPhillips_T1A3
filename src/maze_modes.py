@@ -1,5 +1,5 @@
-from maze_generator import generate_maze_ascii, maze_to_stringList, \
-                           MazeDifficultyInputError, MazeIntRangeError
+from maze_generator import (generate_maze_ascii, maze_to_stringList, 
+                           MazeDifficultyInputError, MazeIntRangeError)
 from os import system, name, path
 from colored import fg, attr
 
@@ -34,17 +34,17 @@ def print_maze_and_move(maze, player_row, player_column, wall_colour = 1):
         if user_direction in ['a', 'w', 'd', 's']:
             previous_row = player_row
             previous_column = player_column
-            if user_direction in 'a' and player_column \
-                and maze[player_row][player_column - 1] == " ":
+            if (user_direction in 'a' and player_column 
+                and maze[player_row][player_column - 1] == " "):
                     player_column -= 2
-            elif user_direction in 'w' and player_row \
-                and maze[player_row - 1][player_column] == " ":
+            elif (user_direction in 'w' and player_row 
+                and maze[player_row - 1][player_column] == " "):
                     player_row -= 2
-            elif user_direction in 'd' and player_column < len(maze[0]) - 1 \
-                and maze[player_row][player_column + 1] == " ":
+            elif (user_direction in 'd' and player_column < len(maze[0]) - 1 
+                and maze[player_row][player_column + 1] == " "):
                     player_column += 2
-            elif user_direction in 's' and player_row < len(maze) - 1 \
-                and maze[player_row + 1][player_column] == " ":
+            elif (user_direction in 's' and player_row < len(maze) - 1 
+                and maze[player_row + 1][player_column] == " "):
                     player_row += 2
             else:
                 print("blocked")

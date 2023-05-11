@@ -1,5 +1,5 @@
-from maze_generator import generate_maze_ascii, current_moves, \
-                           MazeIntRangeError, MazeDifficultyInputError
+from maze_generator import (generate_maze_ascii, current_moves, 
+                           MazeIntRangeError, MazeDifficultyInputError)
 import pytest
 
 # both row and column integer inputs into generate_maze_ascii 
@@ -8,7 +8,7 @@ def test_invalid_size_ranges():
     with pytest.raises(MazeIntRangeError):
         # this will raise a MazeIntRangeError if row is less than 10
         generate_maze_ascii(9,10,"medium")
-          
+
     with pytest.raises(MazeIntRangeError):
         # this will raise a MazeIntRangeError if column is less than 10
         generate_maze_ascii(10,9,"medium")  

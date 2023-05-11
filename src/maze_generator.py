@@ -10,21 +10,21 @@ def current_moves(row_position, column_position,
                   maze_paths_indexes, restrict_left = 1):
     valid_directions = []
     #Check left - left not evaluated when correct path is being generated
-    if column_position - 1 >= 0 and \
-        not maze_paths_indexes[row_position][column_position - 1] and \
-            not restrict_left:
+    if (column_position - 1 >= 0 and 
+        not maze_paths_indexes[row_position][column_position - 1] and 
+            not restrict_left):
         valid_directions.append('left')
     #Check up
-    if row_position - 1 >= 0 and \
-        not maze_paths_indexes[row_position - 1][column_position]:
+    if (row_position - 1 >= 0 and 
+        not maze_paths_indexes[row_position - 1][column_position]):
         valid_directions.append('up')
     #Check right
-    if column_position + 1 <= (len(maze_paths_indexes[0]) - 1) and \
-        not maze_paths_indexes[row_position][column_position + 1]:
+    if (column_position + 1 <= (len(maze_paths_indexes[0]) - 1) and 
+        not maze_paths_indexes[row_position][column_position + 1]):
         valid_directions.append('right')
     #Check down
-    if row_position + 1 <= (len(maze_paths_indexes) - 1) and \
-        not maze_paths_indexes[row_position + 1][column_position]:
+    if (row_position + 1 <= (len(maze_paths_indexes) - 1) and 
+        not maze_paths_indexes[row_position + 1][column_position]):
         valid_directions.append('down')
     #Check if all directions blocked
     if not len(valid_directions): # all direction blocks
@@ -48,12 +48,10 @@ def assign_new_path_index(row_position, column_position,
 
 def maze_to_stringList(maze_ascii_format):
     maze_string_list = []
-    maze_string_list.append("".join(["_" for _ in range(
-        len(maze_ascii_format[0]) + 2)]) + "\n") # top wall
+    maze_string_list.append("".join(["_" for _ in range(len(maze_ascii_format[0]) + 2)]) + "\n") # top wall
     for _,maze_column in enumerate(maze_ascii_format):
         maze_string_list.append(chr(0x256c) + "".join(maze_column) + chr(0x256c) + "\n")
-    maze_string_list.append("".join([chr(0x203e) for _ in range(
-        len(maze_ascii_format[0]) + 2)]) + "\n") # bottom wall
+    maze_string_list.append("".join([chr(0x203e) for _ in range(len(maze_ascii_format[0]) + 2)]) + "\n") # bottom wall
     return maze_string_list
 
 def build_wall_direction(direction):
@@ -66,11 +64,11 @@ def build_wall_direction(direction):
 def check_direction(maze_index_value, maze_next_value, 
                     direction, end_value, correct_fake_connection):    
     if maze_index_value: #there is a number here
-        if maze_index_value + 1 == maze_next_value \
-            or maze_index_value - 1 == maze_next_value: 
+        if (maze_index_value + 1 == maze_next_value 
+            or maze_index_value - 1 == maze_next_value): 
             maze_character = " "
-        elif (maze_index_value, maze_next_value) in correct_fake_connection \
-            or (maze_next_value, maze_index_value) in correct_fake_connection:
+        elif ((maze_index_value, maze_next_value) in correct_fake_connection 
+            or (maze_next_value, maze_index_value) in correct_fake_connection):
             maze_character = " "
         else:
             maze_character = build_wall_direction(direction)
@@ -93,15 +91,13 @@ def evaluate_directions_and_assign(row_position, column_position, maze_index,
 
     if column_position <= len(maze_index[0]) - 2: # all columns except for last column
         maze_next_value = maze_index[row_position][column_position + 1]
-        maze_final[row_position * 2][(column_position * 2) + 1] = \
-            check_direction(maze_value, maze_next_value, 'right', 
-                            end_value, correct_fake_connection)
+        maze_final[row_position * 2][(column_position * 2) + 1] = check_direction(maze_value, maze_next_value, 'right', 
+                                                                                    end_value, correct_fake_connection)
 
     if row_position <= len(maze_index) - 2: # all rows except for last row
         maze_next_value = maze_index[row_position + 1][column_position]
-        maze_final[(row_position * 2) + 1][column_position * 2] = \
-            check_direction(maze_value, maze_next_value, 'down', 
-                            end_value, correct_fake_connection)
+        maze_final[(row_position * 2) + 1][column_position * 2] = check_direction(maze_value, maze_next_value, 'down', 
+                                                                                    end_value, correct_fake_connection)
         if column_position <= len(maze_index[0]) - 2: # all except for bottom right corner of maze
                 maze_final[(row_position * 2) + 1][(column_position * 2) + 1] = chr(0x256C)
 
