@@ -1,9 +1,10 @@
 from maze_modes import single_play_mode, text_file_mode
 from sys import argv
+from os import system, name
 # main code loop
 
 try:
-    print("\n")
+    system('cls' if name == 'nt' else 'clear')
     match argv[1]:
         case 'single':
             single_play_mode()
