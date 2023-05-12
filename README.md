@@ -68,5 +68,5 @@ This feature is for the outputting of a maze to a .txt file in the form of ASCII
 ##### Required dependencies
 
 ##### Installation process
-
+if script doesn't run, do 'chmod +x mazescript.sh' in your terminal
 ##### How to use application (including command line arguments)
