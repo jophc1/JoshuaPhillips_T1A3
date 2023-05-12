@@ -49,7 +49,7 @@ Our second checklist item, development of maze algorithm, can be further broken 
 4. Use the difficulty input from user to determine the amount of fake 
 5. Create fake paths around correct path, having entry from correct path but no exit with the fake paths (i.e they are forced to track back to correct path).
 6. Generate ASCII corridors around correct and fake paths. Also generate walls around maze.
-7. Put player position character (+) at start position of maze.
+7. Put player position character (@) at start position of maze.
 
 ###### Feature 2: Single maze gaming mode
 When our feature 1 is tested and completed, we can start the development of our second feature which is responsible for one of three gaming modes where a user can use keyboard inputs to tranverse the player position (+) in the maze from the start point to the end point through the terminal. As this feature is reliant on the completion of feature 1, the priority is set to MEDIUM. This feature will contain the following checklist:
@@ -59,17 +59,21 @@ When our feature 1 is tested and completed, we can start the development of our 
 4. Implement keyboard controls where 'a' moves left, 's' moves down, 'd' moves right and 'w' moves up. Check each move to make sure not hitting wall, else update maze and refresh terminal to display maze with new player position.
 5. When end of maze is reached, prompt user if they want another game.
 
-###### Feature 3: Multi-maze gaming mode
-This feature is similar to our feature 2 single maze gaming mode, so in terms of priority it has been set to LOW as most of the items to do have been accomplished already. The major difference though is that instead of going through one maze, this mode will involve traversing multiple mazes and will also be timed. The checklist for this feature will be:
-1. Is multi-maze mode selectable by user on the terminal?
-2. When mode is selected, prompt user on maze parameters (same as feature 2) but also ask how many mazes they wish to try.
-3. Generate the first maze, print to terminal with player position (+) at start position and have a timer start when user begins movement.
-4. Implement keyboard controls (same as feature 2). Check if a valid move and refresh display of maze on terminal.
-5. When user reaches end of first maze, pause timer, generate and load next maze and restart timer when user starts movement. Continue this process until all mazes finished.
-6. Print out timer of how long it took to finish all mazes.
+###### Feature 3: Setting Maze wall colour
+The feature to change the colour of the generated maze ascii text can only be implemented when feature 2 single maze gaming mode is completed as it will complement the maze gaming experience, so in terms of priority it has been set to LOW as it is one of the last items that will be finished in the entire project. The checklist for this feature will be:
+1. Create a prompt for a user to ask what colour they want from a small list
+2. Create a small test maze with walls. This will be used for colour confirmation later on.
+3. Take the users inputted colour choice and apply it to the test maze. Print test maze to screen and ask for confirmation from user if they want to keep colour choice.
+4. Add error handling with how colour is chosen. Detect if a user puts in a wrong value and also have it where if user isn't happy with colour, then reprompt for another choice.
+5. When user confirms colour choice, use this colour with an imported package to change the maze colour
 
 ###### Feature 4: Output maze to .txt file for a printable maze puzzle
-This feature is for the outputting of a maze to a .txt file in the form of ASCII art. This will allow a user to generate and print a maze so that they may play it offline without the need for the app. This feature has the same priority as feature 2 (MEDIUM) as either of them can be worked on first without affecting the project timeline.
+This feature is for the outputting of a maze to a .txt file in the form of ASCII art. This will allow a user to generate and print a maze so that they may play it offline without the need for the app. This feature has the same priority as feature 2 (MEDIUM) as either of them can be worked on first without affecting the project timeline. The following checklist will need to be done:
+1. Create a function for txt file generation that will be able to be called on when the user selects a .txt file with a generated maze.
+2. Prompt user on size and complexity of the generated maze. Also prompt user on what the name of the .txt file shall be.
+3. Check if filename that user provides is valid and if there isn't a current file with the same name. If valid but there is a current file, prompt user if they wish to overwrite.
+4. Generate a ascii maze based on user parameters and convert in a string list, where rows of maze are changed to a string.
+5. Open filename provided by user and set to write. Now write each string line of maze into .txt file. When finished, close .txt file and exit program.
 
 #### Help Documentation
 ##### System & Hardware requirements
