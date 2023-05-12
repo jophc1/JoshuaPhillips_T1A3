@@ -76,10 +76,30 @@ This feature is for the outputting of a maze to a .txt file in the form of ASCII
 5. Open filename provided by user and set to write. Now write each string line of maze into .txt file. When finished, close .txt file and exit program.
 
 #### Help Documentation
-##### System & Hardware requirements
+##### System/Hardware requirements
+This maze generator application requires Python3. If you need to install Python3 you can follow this beginner guide [here](https://wiki.python.org/moin/BeginnersGuide/Download) for which operating system you will use to operate the application.   
+
+This application in conjunction with Python3 will also require the installation of 'pip', which has a guide of installation [here](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/). The virtual environment 'venv' comes standard with python 3.3 and onwards so there is no need to install needed.
 
 ##### Required dependencies
+This application is dependent on the following python packages:
+
+colored (version 1.4.4)
+exceptiongroup (version 1.1.1)
+iniconfig (version 2.0.0)
+packaging (version 23.1)
+pluggy (version 1.0.0)
+pytest (version 7.3.1)
+tomli (version 2.0.1)
+
+
 
 ##### Installation process
+Locate src directory path in terminal
+
+This application requires the above dependencies for certain functions to work in the application. Usually the mazescript.sh script will automate package downloading and installation, however in the case of an error, these packages can manually be downloaded and installed through an virtual environment (guide to setup virtual environment [here]()) by using:
+python3 -m pip install (name_of_package)==(version_number)
+e.g. ```python3 -m pip install colored==1.4.4```
+
 if script doesn't run, do 'chmod +x mazescript.sh' in your terminal
 ##### How to use application (including command line arguments)
