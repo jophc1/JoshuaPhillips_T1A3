@@ -53,10 +53,10 @@ Our second checklist item, development of maze algorithm, can be further broken 
 7. Put player position character (@) at start position of maze.
 
 #### Feature 2: Single maze gaming mode
-When our feature 1 is tested and completed, we can start the development of our second feature which is responsible for one of three gaming modes where a user can use keyboard inputs to tranverse the player position (+) in the maze from the start point to the end point through the terminal. As this feature is reliant on the completion of feature 1, the priority is set to MEDIUM. This feature will contain the following checklist:
+When our feature 1 is tested and completed, we can start the development of our second feature which is responsible for one of three gaming modes where a user can use keyboard inputs to tranverse the player position (@) in the maze from the start point to the end point through the terminal. As this feature is reliant on the completion of feature 1, the priority is set to MEDIUM. This feature will contain the following checklist:
 1. Is single maze mode selectable by the user on the terminal?
 2. When mode is selected, prompt user on maze parameters i.e how big is maze, complexity, name of maze.
-3. Generate maze using user parameters and output onto terminal with player position (+) at start position.
+3. Generate maze using user parameters and output onto terminal with player position (@) at start position.
 4. Implement keyboard controls where 'a' moves left, 's' moves down, 'd' moves right and 'w' moves up. Check each move to make sure not hitting wall, else update maze and refresh terminal to display maze with new player position.
 5. When end of maze is reached, prompt user if they want another game.
 
@@ -85,13 +85,13 @@ This application in conjunction with Python3 will also require the installation 
 #### Required dependencies
 This application is dependent on the following python packages:
 
-colored (version 1.4.4)
-exceptiongroup (version 1.1.1)
-iniconfig (version 2.0.0)
-packaging (version 23.1)
-pluggy (version 1.0.0)
-pytest (version 7.3.1)
-tomli (version 2.0.1)
+* colored (version 1.4.4)
+* exceptiongroup (version 1.1.1)
+* iniconfig (version 2.0.0)
+* packaging (version 23.1)
+* pluggy (version 1.0.0)
+* pytest (version 7.3.1)
+* tomli (version 2.0.1)
 
 #### Installation process
 Locate src directory path of application in terminal
@@ -112,7 +112,7 @@ with {argument} replaced with either 'single', 'text' or 'help' e.g.
 
 Regardless of argument used, the first time mazescript.sh is run, a virtual environment .venv folder will be created and activated and the automated downloading and installation of dependecies will be performed. After the dependencies have finished installing, the maze generator application will be ran.
 
-**Note: if dependencies downloaded and installed successfully, disregard the next step**
+**Note: if dependencies downloaded and installed successfully, disregard the next step and skip to 'How to use application'**
  Usually the mazescript.sh script will automate package downloading and installation, however in the case of an error, the dependecies above can manually be downloaded and installed through an virtual environment. The virtual environment is setup and activated by the two commands: 
 
 ```
