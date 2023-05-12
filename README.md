@@ -23,8 +23,15 @@ This feature is for the creation of a mode that will generate a randomised maze,
 
 
 #### Implementation plan
-
 [Link to trello board](https://trello.com/b/K57IXMnw/procedual-generated-maze-game-josh-phillips)
+
+###### Trello board screenshots
+![Trello overview](docs/trello-board-overview.jpg)
+![Trello feature 1](docs/feature-1.jpg)
+![Trello feature 2](docs/feature-2.jpg)
+![Trello feature 3](docs/feature-3.jpg)
+![Trello feature 4](docs/feature-4.jpg)
+![Trello bash script](docs/bash-script.jpg) 
 
 ###### Feature 1: Random Generation of a maze 
 This feature is responsible for the randomised generation of our mazes and is our most important feature as it is required by all other features. This requires us to start and finish this feature before other work on the app can be done. To show the importance, we highlight this as a HIGH PRIORITY in the project management platform software (Trello, link above).   
