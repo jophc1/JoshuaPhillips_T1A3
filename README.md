@@ -79,7 +79,7 @@ This feature is for the outputting of a maze to a .txt file in the form of ASCII
 ##### System/Hardware requirements
 This maze generator application requires Python3. If you need to install Python3 you can follow this beginner guide [here](https://wiki.python.org/moin/BeginnersGuide/Download) for which operating system you will use to operate the application.   
 
-This application in conjunction with Python3 will also require the installation of 'pip', which has a guide of installation [here](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/). The virtual environment 'venv' comes standard with python 3.3 and onwards so there is no need to install needed.
+This application in conjunction with Python3 will also require the installation of 'pip', which has a guide of installation [here](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/). The virtual environment 'venv' comes standard with python 3.3 and onwards so there is no installation needed.
 
 ##### Required dependencies
 This application is dependent on the following python packages:
@@ -95,11 +95,41 @@ tomli (version 2.0.1)
 
 
 ##### Installation process
-Locate src directory path in terminal
+Locate src directory path of application in terminal
+e.g 
+```jophc@jophc1:~/JoshuaPhillips_T1A3/src$```
 
-This application requires the above dependencies for certain functions to work in the application. Usually the mazescript.sh script will automate package downloading and installation, however in the case of an error, these packages can manually be downloaded and installed through an virtual environment (guide to setup virtual environment [here]()) by using:
+While the execute rights for the mazescript.sh should already be allowed, you can activate again with:
+
+```chmod +x mazescript.sh```
+
+
+Now the mazescript.sh wrapper script can be run by: 
+
+```./mazescript.sh {argument}```
+
+with {argument} replaced with either 'single', 'text' or 'help' e.g.
+
+```./mazescript.sh help```
+
+Regardless of argument used, the first time mazescript.sh is run, a virtual environment .venv folder will be created and activated and the automated downloading and installation of dependecies will be performed. After the dependencies have finished installing, the maze generator application will be ran.
+
+**Note: if dependencies downloaded and installed successfully, disregard the next step**
+ Usually the mazescript.sh script will automate package downloading and installation, however in the case of an error, the dependecies above can manually be downloaded and installed through an virtual environment. The virtual environment is setup and activated by the two commands: 
+
+```
+python3 -m venv .venv
+source .venv/bin/activate
+```
+The virtual environment will now show on your command prompt line as (or similar):
+
+```(.venv) jophc@jophc1:~/JoshuaPhillips_T1A3/src$```
+
+When your virtual environment is activated, now each dependicies can be manually downloaded and installed by using:
+ 
 python3 -m pip install (name_of_package)==(version_number)
+
 e.g. ```python3 -m pip install colored==1.4.4```
 
-if script doesn't run, do 'chmod +x mazescript.sh' in your terminal
+
 ##### How to use application (including command line arguments)
