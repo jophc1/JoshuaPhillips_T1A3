@@ -47,7 +47,7 @@ Our second checklist item, development of maze algorithm, can be further broken 
 1. Randomise the start and end positions for the maze. Start is on left side of maze and end is on right side of maze.
 2. ~~Determine the length of correct path through the maze. This will be affected by difficulty level of maze (harder it is, the longer the path).~~ This step was changed as the difficulty was implemented differently. Ended up not predetermining the path length as it makes the game more predictable.
 3. Create a correct path through maze by randomising direction going from left side to right side of maze, ensuring the start and end positions are connected.
-4. Use the difficulty input from user to determine the amount of fake 
+4. Use the difficulty input from user to determine the amount of fake paths
 5. Create fake paths around correct path, having entry from correct path but no exit with the fake paths (i.e they are forced to track back to correct path).
 6. Generate ASCII corridors around correct and fake paths. Also generate walls around maze.
 7. Put player position character (@) at start position of maze.
